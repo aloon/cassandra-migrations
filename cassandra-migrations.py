@@ -5,6 +5,11 @@ import sys, time, os, re
 from xml.etree.ElementTree import Element, SubElement
 from xml.etree import ElementTree
 from xml.dom import minidom
+from subprocess import call
+from subprocess import Popen, PIPE
+from tempfile import SpooledTemporaryFile as tempfile
+
+cqlsh = '/usr/bin/cqlsh'
 
 def help():
   print "help"
@@ -39,15 +44,23 @@ def convert(name):
 def exists_schema():
   return false
   
-def execute():
-  print "execute"
+def migrate():
+  keyspace = sys.argv[2]
+  cql_create_schema = "CREATE TABLE IF NOT EXISTS " + keyspace + ".schema_migrations (version varchar PRIMARY KEY);"
+  print cql_create_schema
+  # insert into mio.schema_migrations (version) values('456456');
+  f = tempfile()
+  f.write(cql_create_schema)
+  f.seek(0)
+  print Popen([cqlsh],stdout=PIPE,stdin=f).stdout.read()
+  f.close()
   
 if len(sys.argv) > 0:
   opt = sys.argv[1]
   if opt == "generateMigration":
     generateMigration()
-  elif opt == "execute":
-    execute()
+  elif opt == "migrate":
+    migrate()
   else:
     help()
 else:
