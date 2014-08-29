@@ -1,0 +1,3 @@
+cassandra-migrations.py generateMigration AddPartNumberToProducts
+
+create    migrations/20140829171538_add_part_number_to_products.xml
