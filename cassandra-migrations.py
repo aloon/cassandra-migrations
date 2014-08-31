@@ -48,37 +48,17 @@ def migrate():
   keyspace = sys.argv[2]
   cql_create_schema = "CREATE TABLE IF NOT EXISTS " + keyspace + ".schema_migrations (version varchar PRIMARY KEY);"
   print cql_create_schema
-  # insert into mio.schema_migrations (version) values('456456');
-  f = tempfile()
-  f.write(cql_create_schema)
-  f.seek(0)
-  print Popen([cqlsh],stdout=PIPE,stdin=f).stdout.read()
-  f.close()
+  cql_exec(cql_create_schema)
+  print cql_exec("select * from mio.schema_migrations;")
   
 
-def system_exec(cmd, sin):
+def cql_exec(sin):
   f = tempfile()
   f.write(sin)
   f.seek(0)
-  print Popen([cmd],stdout=PIPE,stdin=f).stdout.read()
+  out = Popen([cqlsh],stdout=PIPE,stdin=f).stdout.read()
   f.close()
-  #return out
-'''
-def system_exec(cmd, sin):
-  #p = Popen([cmd], stdout=PIPE, stdin=PIPE, stderr=STDOUT)
-  #return p.communicate(input=sin)[0]
-
-  #p = Popen([cmd],stdout=PIPE,stdin=PIPE)
-  #p.stdin.write(sin)
-  #stdout = p.communicate()[0]
-  #p.stdin.close()
-  #return stdout;
-
-  p = Popen(cmd, stdout=PIPE, stdin=PIPE, stderr=STDOUT)
-  p.stdin.write(sin)
-  p.stdin.close()
-  return p.stdout.readline()
-'''
+  return out
   
 if len(sys.argv) > 0:
   opt = sys.argv[1]
