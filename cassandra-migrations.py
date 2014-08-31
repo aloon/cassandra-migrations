@@ -6,7 +6,7 @@ from xml.etree.ElementTree import Element, SubElement
 from xml.etree import ElementTree
 from xml.dom import minidom
 from subprocess import call
-from subprocess import Popen, PIPE
+from subprocess import Popen, PIPE, STDOUT
 from tempfile import SpooledTemporaryFile as tempfile
 
 cqlsh = '/usr/bin/cqlsh'
@@ -55,12 +55,39 @@ def migrate():
   print Popen([cqlsh],stdout=PIPE,stdin=f).stdout.read()
   f.close()
   
+
+def system_exec(cmd, sin):
+  f = tempfile()
+  f.write(sin)
+  f.seek(0)
+  print Popen([cmd],stdout=PIPE,stdin=f).stdout.read()
+  f.close()
+  #return out
+'''
+def system_exec(cmd, sin):
+  #p = Popen([cmd], stdout=PIPE, stdin=PIPE, stderr=STDOUT)
+  #return p.communicate(input=sin)[0]
+
+  #p = Popen([cmd],stdout=PIPE,stdin=PIPE)
+  #p.stdin.write(sin)
+  #stdout = p.communicate()[0]
+  #p.stdin.close()
+  #return stdout;
+
+  p = Popen(cmd, stdout=PIPE, stdin=PIPE, stderr=STDOUT)
+  p.stdin.write(sin)
+  p.stdin.close()
+  return p.stdout.readline()
+'''
+  
 if len(sys.argv) > 0:
   opt = sys.argv[1]
   if opt == "generateMigration":
     generateMigration()
   elif opt == "migrate":
     migrate()
+  elif opt == ".":
+    system_exec("/home/aloon/Projects/cassandra-migrations/inout.sh","hola")
   else:
     help()
 else:
