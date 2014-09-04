@@ -44,7 +44,14 @@ def migrate():
   session = cluster.connect(keyspace)
   cql_create_schema = "CREATE TABLE IF NOT EXISTS schema_migrations (version varchar PRIMARY KEY);"
   session.execute(cql_create_schema)
-  print cql_create_schema
+  f = []
+  for (dirpath, dirnames, filenames) in os.walk('migrations/'):
+    f.extend(filenames)
+    break
+  f = sorted(f)
+  for filename in f:
+    print filename
+  
   
   
 if len(sys.argv) > 0:

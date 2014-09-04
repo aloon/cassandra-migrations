@@ -1,0 +1,9 @@
+<?xml version="1.0" ?>
+<migration>
+  <up>
+Here cql up
+  </up>
+  <down>
+Here cql down.
+  </down>
+</migration>
