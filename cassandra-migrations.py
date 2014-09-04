@@ -56,7 +56,11 @@ def migrate():
     for c in rows:
       count = c[0]
     if count == 0:
-      print "ejecutar " + filename
+      print "ejecutar: " + filename
+      xmldoc = minidom.parse('migrations/' + filename)
+      up = xmldoc.getElementsByTagName('up')[0].firstChild.data
+      down = xmldoc.getElementsByTagName('down')[0].firstChild.data
+      print up
   
   
   
