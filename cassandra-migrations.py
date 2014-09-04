@@ -50,7 +50,13 @@ def migrate():
     break
   f = sorted(f)
   for filename in f:
-    print filename
+    #print filename
+    rows = session.execute("SELECT COUNT(*) AS C FROM schema_migrations where version=%s",[filename])
+    count = 0
+    for c in rows:
+      count = c[0]
+    if count == 0:
+      print "ejecutar " + filename
   
   
   
