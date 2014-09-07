@@ -71,7 +71,7 @@ def current(keyspace):
   for c in rows:
     versions.append(c[0])
   versions = sorted(versions)
-  print versions[-1]
+  return versions[-1]
   
 if len(sys.argv) > 0:
   opt = sys.argv[1]
@@ -81,7 +81,7 @@ if len(sys.argv) > 0:
     migrate()
   elif opt == "current":
     keyspace = sys.argv[2]
-    current(keyspace)
+    print current(keyspace)
   else:
     help()
 else:
