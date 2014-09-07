@@ -1,9 +1,9 @@
 <?xml version="1.0" ?>
 <migration>
   <up>
-Here cql up
+CREATE TABLE users (id int PRIMARY KEY, name varchar);
   </up>
   <down>
-Here cql down.
+drop table users
   </down>
 </migration>
