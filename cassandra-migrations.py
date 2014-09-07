@@ -59,11 +59,19 @@ def migrate():
       xmldoc = minidom.parse('migrations/' + filename)
       up = xmldoc.getElementsByTagName('up')[0].firstChild.data
       down = xmldoc.getElementsByTagName('down')[0].firstChild.data
+      #TODO: exception control
       session.execute(up)
       session.execute("insert into schema_migrations (version) values(%s)",[id_migration])
       print "executed: " + up
   
-  
+def current(keyspace):
+  session = cluster.connect(keyspace)
+  versions = []
+  rows=session.execute("select version from schema_migrations")
+  for c in rows:
+    versions.append(c[0])
+  versions = sorted(versions)
+  print versions[-1]
   
 if len(sys.argv) > 0:
   opt = sys.argv[1]
@@ -71,6 +79,9 @@ if len(sys.argv) > 0:
     generateMigration()
   elif opt == "migrate":
     migrate()
+  elif opt == "current":
+    keyspace = sys.argv[2]
+    current(keyspace)
   else:
     help()
 else:
