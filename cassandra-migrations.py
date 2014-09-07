@@ -71,7 +71,27 @@ def current(keyspace):
   for c in rows:
     versions.append(c[0])
   versions = sorted(versions)
+  #TODO: control first version
   return versions[-1]
+
+def rollback():
+  keyspace = sys.argv[2]
+  session = cluster.connect(keyspace)
+  ff = []
+  for (dirpath, dirnames, filenames) in os.walk('migrations/'):
+    ff.extend(filenames)
+    break
+  filename=''
+  id_migration=current(keyspace)
+  for f in ff:
+    if f.find(id_migration)>-1:
+      filename=f
+  xmldoc = minidom.parse('migrations/' + filename)
+  down = xmldoc.getElementsByTagName('down')[0].firstChild.data  
+  session.execute(down)
+  session.execute("delete from schema_migrations where version=%s",[id_migration])
+  print "executed: " + down
+  #TODO: control first version
   
 if len(sys.argv) > 0:
   opt = sys.argv[1]
@@ -82,6 +102,8 @@ if len(sys.argv) > 0:
   elif opt == "current":
     keyspace = sys.argv[2]
     print current(keyspace)
+  elif opt == "rollback":
+    rollback()
   else:
     help()
 else:
