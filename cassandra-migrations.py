@@ -50,17 +50,18 @@ def migrate():
     break
   f = sorted(f)
   for filename in f:
-    #print filename
-    rows = session.execute("SELECT COUNT(*) AS C FROM schema_migrations where version=%s",[filename])
+    id_migration = filename.split('_')[0]
+    rows = session.execute("SELECT COUNT(*) AS C FROM schema_migrations where version=%s",[id_migration])
     count = 0
     for c in rows:
       count = c[0]
     if count == 0:
-      print "ejecutar: " + filename
       xmldoc = minidom.parse('migrations/' + filename)
       up = xmldoc.getElementsByTagName('up')[0].firstChild.data
       down = xmldoc.getElementsByTagName('down')[0].firstChild.data
-      print up
+      session.execute(up)
+      session.execute("insert into schema_migrations (version) values(%s)",[id_migration])
+      print "executed: " + up
   
   
   
