@@ -1,3 +1,14 @@
+# Schema migration for Cassandra
+
+Simple python script for generate, execute and rollback [schema migrations](http://en.wikipedia.org/wiki/Schema_migration) in Cassandra.
+
+## Python dependencies
+
+pip install cassandra-driver
+pip install blist
+
+
+
 cassandra-migrations.py generateMigration AddPartNumberToProducts
 
 create    migrations/20140829171538_add_part_number_to_products.xml
@@ -20,10 +31,7 @@ CREATE UNIQUE INDEX "unique_schema_migrations" ON "schema_migrations" ("version"
 
 
 
-Dependencies
 
-pip install cassandra-driver
-pip install blist
 
 
     libev Support
