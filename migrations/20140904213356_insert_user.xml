@@ -1,9 +1,0 @@
-<?xml version="1.0" ?>
-<migration>
-  <up>
-insert into users (id, name) values(1, 'Alex')
-  </up>
-  <down>
-delete from users where id=1
-  </down>
-</migration>
