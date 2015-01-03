@@ -17,27 +17,35 @@ $ pip install blist
 ### Create migration
 
 ```
-./cassandra-migrations.py generateMigration DescriptionMigrationName
+./cassandra-migrations.py generate {keyspace} {MigrationName}
 ```
-This create the file like: ./migrations/20140914222010_decription_migration_name.xml
+This create the file like: ./migrations/{keyspace}/20140914222010_{MigrationName}.xml
 ```xml
 <?xml version="1.0" ?>
 <migration>
-  <up>
-CQL migration command
-  </up>
-  <down>
-CQL rollback
-  </down>
+    <up>
+	    <cql><![CDATA[
+Here cql up
+	    ]]></cql>
+	</up>
+	<down>
+  	    <cql><![CDATA[
+Here cql down
+		]]></cql>
+	</down>
 </migration>
 ```
 ### Execute migration
 ```
-$ ./cassandra-migrations.py migrate keyspace
+$ ./cassandra-migrations.py migrate {keyspace}
+```
+or 
+```
+$ ./cassandra-migrations.py migrate {keyspace} {serverIP}
 ```
 ### rollback migration
 ```
-$ ./cassandra-migrations.py rollback keyspace
+$ ./cassandra-migrations.py rollback {keyspace}
 ```
 
 
