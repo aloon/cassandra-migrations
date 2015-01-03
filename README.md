@@ -2,7 +2,7 @@
 
 Simple python script for generate, execute and rollback [schema migrations](http://en.wikipedia.org/wiki/Schema_migration) in Cassandra.
 
-## Intallation
+## Installation
 
 Download the script, give execution permission and install the python dependencies
 
@@ -19,7 +19,7 @@ $ pip install blist
 ```
 ./cassandra-migrations.py generate {keyspace} {MigrationName}
 ```
-This create the file like: ./migrations/{keyspace}/20140914222010_{MigrationName}.xml
+This creates a new file like: ./migrations/{keyspace}/20140914222010_{MigrationName}.xml
 ```xml
 <?xml version="1.0" ?>
 <migration>
@@ -47,7 +47,3 @@ $ ./cassandra-migrations.py migrate {keyspace} {serverIP}
 ```
 $ ./cassandra-migrations.py rollback {keyspace}
 ```
-
-
-
-
