@@ -47,3 +47,13 @@ $ ./cassandra-migrations.py migrate {keyspace} {serverIP}
 ```
 $ ./cassandra-migrations.py rollback {keyspace}
 ```
+
+## Change Log
+
+**2015-01-02**
+- Enables multiple CQL up/down executions in the same migration
+- Ability to have migrations for multiple keyspaces with single installation
+- Updated default migration XML template
+- Added support for remote server migrations
+- Better notifications and warnings/errors when running
+- Help documentation
